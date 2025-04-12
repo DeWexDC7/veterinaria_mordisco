@@ -42,7 +42,7 @@ function Login() {
         
         {error && <div className="error-message">{error}</div>}
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{width: '100%'}}>
           <div className="form-group">
             <label htmlFor="usuario">Usuario</label>
             <input
