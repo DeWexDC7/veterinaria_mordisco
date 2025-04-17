@@ -29,7 +29,7 @@ const Sidebar = ({ isOpen, toggleSidebar, darkMode, toggleDarkMode, isMobile }) 
         ) : (
           <>
             <button 
-              className="hamburger-button"
+              className={`hamburger-button ${isOpen ? 'active' : ''}`}
               onClick={toggleSidebar}
               aria-label="Toggle menu"
             >

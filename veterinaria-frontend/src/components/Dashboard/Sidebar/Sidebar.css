@@ -166,6 +166,23 @@
   top: 6px;
 }
 
+/* Transformación a X cuando el botón está activo */
+.hamburger-button.active .hamburger {
+  background-color: var(--primary-color); /* Por defecto mantener color verde */
+}
+
+.hamburger-button.active .hamburger::before {
+  top: -6px; /* Mantener posición original */
+  transform: none; /* Sin rotación */
+  background-color: var(--primary-color);
+}
+
+.hamburger-button.active .hamburger::after {
+  top: 6px; /* Mantener posición original */
+  transform: none; /* Sin rotación */
+  background-color: var(--primary-color);
+}
+
 /* Botón hamburguesa flotante para móviles */
 .floating-hamburger {
   position: fixed;
@@ -484,6 +501,23 @@ input:checked + .slider:before {
     width: 50px; /* Más grande para mejor usabilidad en táctil */
     height: 50px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Transformación a X cuando el botón está activo SOLO EN MÓVIL */
+  .hamburger-button.active .hamburger {
+    background-color: transparent; /* La línea del medio desaparece */
+  }
+
+  .hamburger-button.active .hamburger::before {
+    top: 0;
+    transform: rotate(45deg);
+    background-color: var(--primary-color);
+  }
+
+  .hamburger-button.active .hamburger::after {
+    top: 0;
+    transform: rotate(-45deg);
+    background-color: var(--primary-color);
   }
 }
 

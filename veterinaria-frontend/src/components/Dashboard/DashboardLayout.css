@@ -120,9 +120,9 @@ body.dark-mode {
   position: relative;
   width: 20px;
   height: 2px;
-  background-color: var(--text-primary);
+  background-color: var(--primary-color);
   display: block;
-  transition: all 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
 .hamburger::before,
@@ -131,9 +131,9 @@ body.dark-mode {
   position: absolute;
   width: 20px;
   height: 2px;
-  background-color: var(--text-primary);
+  background-color: var(--primary-color);
   display: block;
-  transition: all 0.2s ease;
+  transition: transform 0.3s ease, top 0.3s ease;
 }
 
 .hamburger::before {
@@ -142,6 +142,21 @@ body.dark-mode {
 
 .hamburger::after {
   top: 6px;
+}
+
+/* Transformación a X cuando el sidebar está abierto */
+.dashboard-container.sidebar-open .menu-toggle .hamburger {
+  background-color: transparent; /* La línea del medio desaparece */
+}
+
+.dashboard-container.sidebar-open .menu-toggle .hamburger::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.dashboard-container.sidebar-open .menu-toggle .hamburger::after {
+  transform: rotate(-45deg);
+  top: 0;
 }
 
 .dashboard-main {

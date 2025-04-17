@@ -100,6 +100,10 @@ const DashboardLayout = () => {
       <div className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-collapsed'}`}>
         <header className="dashboard-header">
           <div className="header-left">
+            {/* Botón de menú hamburguesa para móviles */}
+            <button className="menu-toggle" onClick={toggleSidebar}>
+              <span className="hamburger"></span>
+            </button>
             <h1>Veterinaria Mordisco</h1>
           </div>
           
