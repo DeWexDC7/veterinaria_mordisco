@@ -21,6 +21,17 @@
   --card-bg-dark: #2d2d2d;
   --text-color-dark: #f0f0f0;
   --border-color-dark: #444444;
+  --sidebar-bg-dark: #1e1e1e;
+  
+  /* Colores para el modo claro */
+  --sidebar-bg-light: #ffffff;
+  
+  /* Estilos para el tema claro (default) */
+  --background-color: var(--background-light);
+  --card-bg: var(--card-bg-light);
+  --text-primary: var(--text-color);
+  --border-color: var(--border-color-light);
+  --sidebar-bg: var(--sidebar-bg-light);
 }
 
 /* Estilos para el tema oscuro */
@@ -29,14 +40,7 @@
   --card-bg: var(--card-bg-dark);
   --text-primary: var(--text-color-dark);
   --border-color: var(--border-color-dark);
-}
-
-/* Estilos para el tema claro (default) */
-:root {
-  --background-color: var(--background-light);
-  --card-bg: var(--card-bg-light);
-  --text-primary: var(--text-color);
-  --border-color: var(--border-color-light);
+  --sidebar-bg: var(--sidebar-bg-dark);
 }
 
 .sidebar {
@@ -45,7 +49,7 @@
   left: 0;
   height: 100vh;
   width: var(--sidebar-width);
-  background-color: var(--card-bg);
+  background-color: var(--sidebar-bg);
   color: var(--text-primary);
   transition: all 0.3s ease;
   z-index: 1000;
@@ -55,45 +59,162 @@
   border-right: 1px solid var(--border-color);
 }
 
+/* Sidebar completamente cerrado (solo para móviles) */
 .sidebar.closed {
   transform: translateX(-100%);
 }
 
-@media (min-width: 992px) {
-  .sidebar.closed {
-    transform: translateX(0);
-    width: var(--sidebar-collapsed-width);
-  }
-  
-  .sidebar.closed .menu-text,
-  .sidebar.closed .sidebar-title,
-  .sidebar.closed .toggle-label {
-    display: none;
-  }
-  
-  .sidebar.closed .sidebar-menu a {
-    justify-content: center;
-    padding: 15px 0;
-  }
-  
-  .sidebar.closed .menu-icon {
-    margin-right: 0;
-  }
-  
-  .sidebar.closed .sidebar-header {
-    padding: 15px 0;
-    justify-content: center;
-  }
-  
-  .sidebar.closed .close-sidebar {
-    display: none;
-  }
+/* Sidebar colapsado (solo iconos) para escritorio */
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+  transform: translateX(0);
+}
+
+/* Ajustes para el sidebar colapsado en escritorio */
+.sidebar.collapsed .sidebar-title,
+.sidebar.collapsed .toggle-label,
+.sidebar.collapsed .menu-text {
+  display: none;
+}
+
+.sidebar.collapsed .dark-mode-toggle {
+  display: none;
+}
+
+.sidebar.collapsed .toggle-icon-only {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.sidebar.collapsed .sidebar-menu a {
+  justify-content: center;
+  padding: 15px 0;
+}
+
+.sidebar.collapsed .menu-icon {
+  margin-right: 0;
+  font-size: 1.2rem;
+}
+
+.sidebar.collapsed .sidebar-header {
+  padding: 10px 0;
+  justify-content: center;
+  height: 60px;
+  border-bottom-color: var(--border-color);
+}
+
+/* Estilo especial para el botón hamburguesa en estado colapsado */
+.collapsed-hamburger {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collapsed-hamburger .hamburger,
+.collapsed-hamburger .hamburger::before,
+.collapsed-hamburger .hamburger::after {
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Estilos para el botón hamburguesa */
+.hamburger-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  color: var(--primary-color);
+}
+
+.hamburger-button .hamburger,
+.hamburger-button .hamburger::before,
+.hamburger-button .hamburger::after {
+  width: 22px;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.hamburger-button .hamburger {
+  position: relative;
+}
+
+.hamburger-button .hamburger::before,
+.hamburger-button .hamburger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+.hamburger-button .hamburger::before {
+  top: -6px;
+}
+
+.hamburger-button .hamburger::after {
+  top: 6px;
+}
+
+/* Botón hamburguesa flotante para móviles */
+.floating-hamburger {
+  position: fixed;
+  left: 15px;
+  top: 15px;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.floating-hamburger .hamburger,
+.floating-hamburger .hamburger::before,
+.floating-hamburger .hamburger::after {
+  width: 18px;
+  height: 2px;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.floating-hamburger .hamburger {
+  position: relative;
+}
+
+.floating-hamburger .hamburger::before,
+.floating-hamburger .hamburger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+.floating-hamburger .hamburger::before {
+  top: -5px;
+}
+
+.floating-hamburger .hamburger::after {
+  top: 5px;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 15px 20px;
   border-bottom: 1px solid var(--border-color);
 }
@@ -103,14 +224,17 @@
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--primary-color);
+  flex-grow: 1;
 }
 
-.close-sidebar {
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  font-size: 1.5rem;
-  cursor: pointer;
+.collapsed-logo {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .sidebar-content {
@@ -185,18 +309,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 20px 15px;
 }
 
 .toggle-label {
   font-size: 0.9rem;
+  margin-right: 10px;
+  color: var(--text-primary);
+}
+
+.toggle-icon-only {
+  display: none;
 }
 
 /* Switch para el modo oscuro */
 .switch {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 24px;
+  width: 60px;
+  height: 30px;
 }
 
 .switch input {
@@ -214,50 +345,167 @@
   bottom: 0;
   background-color: #ccc;
   transition: .4s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
   background-color: white;
   transition: .4s;
+  z-index: 2;
+}
+
+/* Íconos de sol y luna */
+.slider .sun-icon,
+.slider .moon-icon {
+  color: white;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.slider .sun-icon {
+  margin-left: auto;
+}
+
+.slider .moon-icon {
+  margin-right: auto;
 }
 
 input:checked + .slider {
-  background-color: var(--primary-color);
+  background-color: #2196F3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--primary-color);
+  box-shadow: 0 0 1px #2196F3;
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+  transform: translateX(30px);
 }
 
 .slider.round {
-  border-radius: 24px;
+  border-radius: 34px;
 }
 
 .slider.round:before {
   border-radius: 50%;
 }
 
-/* Estilos para dispositivos móviles */
+.mini-switch {
+  width: 40px;
+  height: 20px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.mini-switch .slider {
+  border-radius: 34px;
+  background-color: #1a1a1a;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.mini-switch .slider:before {
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mini-switch input:checked + .slider {
+  background-color: #4a90e2;
+}
+
+.mini-switch input:checked + .slider:before {
+  transform: translateX(18px); /* Reducido de 20px a 18px para evitar que sobrepase */
+}
+
+.mini-switch .slider .sun-icon,
+.mini-switch .slider .moon-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  z-index: 1;
+}
+
+.mini-switch .slider .sun-icon {
+  right: 4px;
+}
+
+.mini-switch .slider .moon-icon {
+  left: 4px;
+}
+
+/* Ocultar los iconos del sol y la luna en modo colapsado */
+.sidebar.collapsed .mini-switch .slider .sun-icon,
+.sidebar.collapsed .mini-switch .slider .moon-icon {
+  display: none;
+}
+
+/* Responsive media queries */
 @media (max-width: 991px) {
   .sidebar {
     transform: translateX(-100%);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    width: 80%; /* Ancho más amplio para mejor usabilidad en móvil */
+    max-width: 300px; /* Máximo ancho para tablets */
+    z-index: 1050; /* Mayor z-index para asegurar que esté por encima de todo */
   }
   
   .sidebar.open {
     transform: translateX(0);
   }
   
-  .main-content.sidebar-open {
-    margin-left: 0;
+  .sidebar.collapsed {
+    transform: translateX(-100%);
   }
+  
+  .sidebar-menu a {
+    padding: 15px 20px; /* Mayor padding para mejor usabilidad en táctil */
+  }
+  
+  .menu-icon {
+    font-size: 1.2rem; /* Iconos más grandes para móvil */
+  }
+
+  /* Ajustar el botón flotante para móviles */
+  .floating-hamburger {
+    left: 20px;
+    top: 20px;
+    width: 50px; /* Más grande para mejor usabilidad en táctil */
+    height: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (min-width: 992px) {
+  /* En desktop estilo del botón hamburguesa más sutil */
+  .hamburger-sidebar {
+    opacity: 0.7;
+  }
+  
+  .hamburger-sidebar:hover {
+    opacity: 1;
+  }
+}
+
+/* Estilos para el botón hamburguesa dentro del sidebar */
+.hamburger-sidebar {
+  margin-right: 10px;
+  background-color: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

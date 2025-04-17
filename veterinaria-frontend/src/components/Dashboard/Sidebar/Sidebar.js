@@ -2,17 +2,42 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-// Importación de iconos que simularemos con CSS por ahora
-// En un proyecto real usaríamos react-icons o similar
-
-const Sidebar = ({ isOpen, toggleSidebar, darkMode, toggleDarkMode }) => {
+const Sidebar = ({ isOpen, toggleSidebar, darkMode, toggleDarkMode, isMobile }) => {
+  // Determinar si el sidebar está en modo colapsado (solo iconos) o completamente cerrado
+  // En modo móvil: closed = completamente oculto
+  // En pantallas grandes: closed = solo mostrar iconos
+  const sidebarClass = !isOpen 
+    ? (isMobile ? 'closed' : 'collapsed') 
+    : 'open';
+  
+  // Iconos optimizados para el toggle de modo oscuro/claro
+  const sunIcon = "☀️";
+  const moonIcon = "🌙";
+  
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+    <aside className={`sidebar ${sidebarClass}`}>
       <div className="sidebar-header">
-        <h2 className="sidebar-title">Veterinaria</h2>
-        <button className="close-sidebar" onClick={toggleSidebar}>
-          &times;
-        </button>
+        {/* En modo colapsado (pantalla grande), mostrar solo el botón hamburguesa */}
+        {(!isOpen && !isMobile) ? (
+          <button 
+            className="hamburger-button collapsed-hamburger"
+            onClick={toggleSidebar}
+            aria-label="Toggle menu"
+          >
+            <span className="hamburger"></span>
+          </button>
+        ) : (
+          <>
+            <button 
+              className="hamburger-button"
+              onClick={toggleSidebar}
+              aria-label="Toggle menu"
+            >
+              <span className="hamburger"></span>
+            </button>
+            <h2 className="sidebar-title">Veterinaria</h2>
+          </>
+        )}
       </div>
       
       <div className="sidebar-content">
@@ -46,7 +71,7 @@ const Sidebar = ({ isOpen, toggleSidebar, darkMode, toggleDarkMode }) => {
       
       <div className="sidebar-footer">
         <div className="dark-mode-toggle">
-          <span className="toggle-label">Modo Oscuro</span>
+          <span className="toggle-label">{darkMode ? 'Modo Oscuro' : 'Modo Claro'}</span>
           <label className="switch">
             <input 
               type="checkbox" 
@@ -54,10 +79,40 @@ const Sidebar = ({ isOpen, toggleSidebar, darkMode, toggleDarkMode }) => {
               onChange={toggleDarkMode}
               aria-label="Toggle dark mode"
             />
-            <span className="slider round"></span>
+            <span className="slider round">
+              <span className="sun-icon">{sunIcon}</span>
+              <span className="moon-icon">{moonIcon}</span>
+            </span>
           </label>
         </div>
+        {!isMobile && !isOpen && (
+          <div className="toggle-icon-only">
+            <label className="switch mini-switch">
+              <input 
+                type="checkbox" 
+                checked={darkMode} 
+                onChange={toggleDarkMode}
+                aria-label="Toggle dark mode"
+              />
+              <span className="slider round">
+                <span className="sun-icon">{sunIcon}</span>
+                <span className="moon-icon">{moonIcon}</span>
+              </span>
+            </label>
+          </div>
+        )}
       </div>
+      
+      {/* Botón hamburguesa flotante para dispositivos móviles cuando está cerrado */}
+      {isMobile && !isOpen && (
+        <button 
+          className="floating-hamburger"
+          onClick={toggleSidebar}
+          aria-label="Open menu"
+        >
+          <span className="hamburger"></span>
+        </button>
+      )}
     </aside>
   );
 };

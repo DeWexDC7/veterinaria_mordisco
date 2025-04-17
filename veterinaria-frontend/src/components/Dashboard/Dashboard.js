@@ -1,34 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  // Estado para detectar el modo oscuro
+  const [isDarkMode, setIsDarkMode] = useState(document.body.classList.contains('dark-mode'));
+  
+  // Actualizar el estado del modo oscuro si cambia
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.body.classList.contains('dark-mode'));
+    };
+    
+    // Verificar inicialmente
+    checkDarkMode();
+    
+    // Crear un observador para detectar cambios en el body
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.body, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
   // Datos simulados para estadísticas
   const stats = [
-    { id: 1, title: 'Citas Pendientes', value: 15, icon: '📅', color: '#5cad8a' },
-    { id: 2, title: 'Pacientes Activos', value: 127, icon: '🐾', color: '#4a6da7' },
-    { id: 3, title: 'Clientes Registrados', value: 78, icon: '👪', color: '#f39c12' },
-    { id: 4, title: 'Ingresos del Mes', value: '$5,243', icon: '💰', color: '#3498db' }
+    { id: 1, title: 'Citas Pendientes', value: 15, icon: '📅', color: '#e74c3c', class: 'appointments' },
+    { id: 2, title: 'Pacientes Activos', value: 127, icon: '🐾', color: '#3498db', class: 'patients' },
+    { id: 3, title: 'Clientes Registrados', value: 78, icon: '👪', color: '#f39c12', class: 'clients' }
   ];
+
+  // Colores adaptados según el modo
+  const barColor = isDarkMode ? '#5cad8a' : '#3498db';
 
   return (
     <div className="dashboard-content">
       <h2 className="dashboard-title">Panel de Control</h2>
-      <p className="dashboard-subtitle">Bienvenido al panel de control de la Veterinaria Mordisco</p>
+      <p className="dashboard-welcome">Bienvenido al panel de control de la Veterinaria Mordisco</p>
 
       <div className="stats-container">
         {stats.map(stat => (
           <div 
             key={stat.id} 
-            className="stat-card"
-            style={{ borderTopColor: stat.color }}
+            className={`dashboard-card ${stat.class}`}
+            style={{borderTopColor: stat.color}}
           >
-            <div className="stat-icon" style={{ color: stat.color }}>
-              <span>{stat.icon}</span>
+            <div className="dashboard-card-header">
+              <div className="dashboard-card-icon" style={{backgroundColor: `${stat.color}20`}}>
+                <span style={{fontSize: '1.5rem'}}>{stat.icon}</span>
+              </div>
+              <h3 className="dashboard-card-title">{stat.title}</h3>
             </div>
-            <div className="stat-info">
-              <h3>{stat.title}</h3>
-              <p className="stat-value">{stat.value}</p>
-            </div>
+            <div className="dashboard-card-value">{stat.value}</div>
           </div>
         ))}
       </div>
@@ -38,19 +62,19 @@ const Dashboard = () => {
           <h3 className="chart-title">Citas por Mes</h3>
           <div className="chart-placeholder">
             <div className="chart-bars">
-              <div className="chart-bar" style={{ height: '60%', backgroundColor: '#5cad8a' }}><span>Ene</span></div>
-              <div className="chart-bar" style={{ height: '80%', backgroundColor: '#5cad8a' }}><span>Feb</span></div>
-              <div className="chart-bar" style={{ height: '70%', backgroundColor: '#5cad8a' }}><span>Mar</span></div>
-              <div className="chart-bar" style={{ height: '90%', backgroundColor: '#5cad8a' }}><span>Abr</span></div>
-              <div className="chart-bar" style={{ height: '75%', backgroundColor: '#5cad8a' }}><span>May</span></div>
-              <div className="chart-bar" style={{ height: '85%', backgroundColor: '#5cad8a' }}><span>Jun</span></div>
+              <div className="chart-bar" style={{ height: '60%', backgroundColor: barColor }}><span>Ene</span></div>
+              <div className="chart-bar" style={{ height: '80%', backgroundColor: barColor }}><span>Feb</span></div>
+              <div className="chart-bar" style={{ height: '70%', backgroundColor: barColor }}><span>Mar</span></div>
+              <div className="chart-bar" style={{ height: '90%', backgroundColor: barColor }}><span>Abr</span></div>
+              <div className="chart-bar" style={{ height: '75%', backgroundColor: barColor }}><span>May</span></div>
+              <div className="chart-bar" style={{ height: '85%', backgroundColor: barColor }}><span>Jun</span></div>
             </div>
           </div>
         </div>
 
         <div className="chart-card">
           <h3 className="chart-title">Distribución de Pacientes</h3>
-          <div className="chart-placeholder">
+          <div className="chart-placeholder" style={{ position: 'relative', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
             <div className="pie-chart">
               <div className="pie-slice" style={{ 
                 '--percentage': '45%', 
@@ -90,7 +114,9 @@ const Dashboard = () => {
         <h3 className="section-title">Actividad Reciente</h3>
         <div className="activity-list">
           <div className="activity-item">
-            <div className="activity-icon" style={{ backgroundColor: 'rgba(92, 173, 138, 0.2)', color: '#5cad8a' }}>🐶</div>
+            <div className="activity-icon" style={{ backgroundColor: '#e8f5e9' }}>
+              <span role="img" aria-label="dog">🐶</span>
+            </div>
             <div className="activity-content">
               <h4>Nueva cita</h4>
               <p>Max (Labrador) - Vacunación programada</p>
@@ -98,7 +124,9 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="activity-item">
-            <div className="activity-icon" style={{ backgroundColor: 'rgba(74, 109, 167, 0.2)', color: '#4a6da7' }}>🐱</div>
+            <div className="activity-icon" style={{ backgroundColor: '#e3f2fd' }}>
+              <span role="img" aria-label="cat">🐱</span>
+            </div>
             <div className="activity-content">
               <h4>Nuevo paciente registrado</h4>
               <p>Luna (Gato Siamés) - Primera consulta</p>
@@ -106,10 +134,12 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="activity-item">
-            <div className="activity-icon" style={{ backgroundColor: 'rgba(243, 156, 18, 0.2)', color: '#f39c12' }}>💊</div>
+            <div className="activity-icon" style={{ backgroundColor: '#fff3e0' }}>
+              <span role="img" aria-label="pill">💊</span>
+            </div>
             <div className="activity-content">
               <h4>Tratamiento completado</h4>
-              <p>Rocky (Bulldog) - Tratamiento dermatológico</p>
+              <p>Rocky - Antibióticos para infección</p>
               <span className="activity-time">Hace 5 horas</span>
             </div>
           </div>
