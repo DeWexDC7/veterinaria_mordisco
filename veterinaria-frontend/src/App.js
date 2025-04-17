@@ -3,39 +3,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import Dashboard from './components/Dashboard/Dashboard';
+import DashboardLayout from './components/Dashboard/DashboardLayout';
+import AdminPanel from './components/AdminPanel/AdminPanel';
+import NotFound from './components/NotFound/NotFound';
 
-// Placeholder para páginas que se crearán después
-const Dashboard = () => (
-  <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-    <h1>Dashboard</h1>
-    <p>Bienvenido al panel de control de la Veterinaria Mordisco</p>
-    <div style={{ marginTop: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '5px' }}>
-      <h3>Acceso exitoso</h3>
-      <p>Has iniciado sesión correctamente y ahora tienes acceso al sistema.</p>
-    </div>
-  </div>
-);
-
-const AdminPanel = () => (
-  <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-    <h1>Panel de Administración</h1>
-    <p>Esta sección es solo para administradores de la Veterinaria Mordisco</p>
-    <div style={{ marginTop: '20px', padding: '15px', background: '#e8f4f8', borderRadius: '5px', border: '1px solid #5cad8a' }}>
-      <h3>Acceso administrativo</h3>
-      <p>Has iniciado sesión como administrador y tienes acceso a funcionalidades privilegiadas.</p>
-    </div>
-  </div>
-);
-
-const NotFound = () => (
-  <div style={{ padding: '20px', textAlign: 'center' }}>
-    <h1>404 - Página no encontrada</h1>
-    <p>La página que estás buscando no existe o ha sido movida.</p>
-    <a href="/" style={{ display: 'inline-block', marginTop: '20px', padding: '10px 15px', background: '#5cad8a', color: 'white', textDecoration: 'none', borderRadius: '4px' }}>
-      Volver al inicio
-    </a>
-  </div>
-);
+// Placeholders para páginas futuras
+const UsuariosPage = () => <div className="page-content"><h2>Gestión de Usuarios</h2><p>Esta sección permitirá administrar los usuarios del sistema.</p></div>;
+const ClientesPage = () => <div className="page-content"><h2>Gestión de Clientes</h2><p>Esta sección permitirá administrar los clientes de la veterinaria.</p></div>;
+const PacientesPage = () => <div className="page-content"><h2>Gestión de Pacientes</h2><p>Esta sección permitirá administrar los pacientes (mascotas) de la veterinaria.</p></div>;
+const CitasPage = () => <div className="page-content"><h2>Gestión de Citas</h2><p>Esta sección permitirá administrar las citas y horarios de la veterinaria.</p></div>;
 
 function App() {
   return (
@@ -48,15 +25,21 @@ function App() {
           {/* Ruta predeterminada - Redirigir al login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           
-          {/* Rutas protegidas - Requieren autenticación */}
+          {/* Rutas del Dashboard con Layout compartido */}
           <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <DashboardLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="usuarios" element={<UsuariosPage />} />
+            <Route path="clientes" element={<ClientesPage />} />
+            <Route path="pacientes" element={<PacientesPage />} />
+            <Route path="citas" element={<CitasPage />} />
+          </Route>
           
           {/* Rutas protegidas con rol específico - Requieren ser administrador */}
           <Route 

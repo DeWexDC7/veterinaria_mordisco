@@ -1,5 +1,5 @@
 // Archivo para gestionar la autenticación con el backend
-// Establecemos la URL de la API de forma directa para evitar problemas con las variables de entorno
+// Usamos localhost porque estamos comprobado que funciona con curl
 const API_URL = 'http://localhost:3000/api';
 
 /**

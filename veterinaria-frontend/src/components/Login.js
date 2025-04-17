@@ -7,27 +7,46 @@ function Login() {
   const [contrasenia, setContrasenia] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [apiStatus, setApiStatus] = useState('idle'); // idle, checking, error, success
+  const [apiStatus, setApiStatus] = useState('checking'); // idle, checking, error, success
 
   // Verificar estado de conectividad con el backend al cargar
   useEffect(() => {
     const checkApiConnection = async () => {
       try {
         setApiStatus('checking');
-        
-        // URL fija para verificar la conexión con el backend
-        const backendUrl = 'http://localhost:3000';
+        // Usamos la URL exacta que confirmamos funciona con curl
+        const backendUrl = 'http://localhost:3000/';
         
         console.log('Verificando conexión con:', backendUrl);
         
-        const response = await fetch(backendUrl);
-        if (response.ok) {
-          console.log('Conexión exitosa con el backend');
-          setApiStatus('success');
-        } else {
-          console.warn('API respondió con error:', response.status);
-          setApiStatus('error');
+        // Añadimos opciones a fetch para evitar problemas de CORS
+        const response = await fetch(backendUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          // Desactivamos las credenciales para esta prueba
+          credentials: 'omit',
+          mode: 'cors'
+        });
+        
+        const text = await response.text();
+        console.log('Respuesta del servidor (texto):', text);
+        
+        // Intentamos parsear la respuesta como JSON
+        let data;
+        try {
+          data = JSON.parse(text);
+          console.log('Respuesta parseada:', data);
+        } catch (parseError) {
+          console.error('Error al parsear la respuesta como JSON:', parseError);
+          throw new Error('La respuesta del servidor no es un JSON válido');
         }
+        
+        // Si llegamos aquí, la conexión fue exitosa
+        console.log('Conexión exitosa con el backend:', data);
+        setApiStatus('success');
       } catch (err) {
         console.error('Error al conectar con el backend:', err);
         setApiStatus('error');
